@@ -1,0 +1,59 @@
+# Unreal Engine Naming Conventions for .editorconfig
+
+# Global settings
+root = true
+
+# C++ Files
+[*.{h,hpp,cpp,inl}]
+# Class Names - PascalCase
+dotnet_naming_rule.unreal_class_names.severity = warning
+dotnet_naming_rule.unreal_class_names.style = unreal_pascal_case
+dotnet_naming_symbols.unreal_class_symbol.applicable_kinds = class,struct,interface,enum
+dotnet_naming_style.unreal_pascal_case.capitalization = pascal_case
+dotnet_naming_style.unreal_pascal_case.word_separator = 
+
+# Member Variables - Prefixed with m_
+dotnet_naming_rule.unreal_member_variables.severity = warning
+dotnet_naming_rule.unreal_member_variables.style = unreal_member_style
+dotnet_naming_symbols.unreal_member_symbol.applicable_kinds = field,property
+dotnet_naming_style.unreal_member_style.required_prefix = m_
+dotnet_naming_style.unreal_member_style.capitalization = camel_case
+
+# Function Names - PascalCase
+dotnet_naming_rule.unreal_function_names.severity = warning
+dotnet_naming_rule.unreal_function_names.style = unreal_pascal_case
+dotnet_naming_symbols.unreal_function_symbol.applicable_kinds = method
+dotnet_naming_style.unreal_function_names.capitalization = pascal_case
+
+# Parameter Names - Camel Case
+dotnet_naming_rule.unreal_parameter_names.severity = warning
+dotnet_naming_rule.unreal_parameter_names.style = unreal_camel_case
+dotnet_naming_symbols.unreal_parameter_symbol.applicable_kinds = parameter
+dotnet_naming_style.unreal_camel_case.capitalization = camel_case
+
+# Local Variables - Camel Case
+dotnet_naming_rule.unreal_local_variables.severity = warning
+dotnet_naming_rule.unreal_local_variables.style = unreal_camel_case
+dotnet_naming_symbols.unreal_local_variable_symbol.applicable_kinds = local
+dotnet_naming_style.unreal_local_variables.capitalization = camel_case
+
+# Boolean Variables - b prefix
+dotnet_naming_rule.unreal_boolean_variables.severity = warning
+dotnet_naming_rule.unreal_boolean_variables.style = unreal_boolean_style
+dotnet_naming_symbols.unreal_boolean_symbol.applicable_kinds = field
+dotnet_naming_style.unreal_boolean_style.required_prefix = b
+dotnet_naming_style.unreal_boolean_style.capitalization = camel_case
+
+# Enum Values - PascalCase
+dotnet_naming_rule.unreal_enum_values.severity = warning
+dotnet_naming_rule.unreal_enum_values.style = unreal_pascal_case
+dotnet_naming_symbols.unreal_enum_value_symbol.applicable_kinds = enum_member
+dotnet_naming_style.unreal_enum_values.capitalization = pascal_case
+
+# Const Variables - All Uppercase with Underscores
+dotnet_naming_rule.unreal_const_variables.severity = warning
+dotnet_naming_rule.unreal_const_variables.style = unreal_const_style
+dotnet_naming_symbols.unreal_const_symbol.applicable_kinds = field,local
+dotnet_naming_symbols.unreal_const_symbol.required_modifiers = const
+dotnet_naming_style.unreal_const_style.capitalization = all_upper
+dotnet_naming_style.unreal_const_style.word_separator = _
