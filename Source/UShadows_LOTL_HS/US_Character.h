@@ -39,6 +39,9 @@ class USHADOWS_LOTL_HS_API AUS_Character : public ACharacter
 	void SprintStart_Client();
 	UFUNCTION(NetMulticast, Reliable)
 	void SprintEnd_Client();
+
+
+
 public:
 	// Sets default values for this character's properties
 	AUS_Character();
@@ -67,6 +70,7 @@ public:
 
 	void UpdateCharacterStats(int32 CharacterLevel);
 
+	void Spawn(int index, int total);
 
 	UFUNCTION(Server, Reliable)
 	void SprintStart_Server();
@@ -85,4 +89,8 @@ public:
 
 	FORCEINLINE UUS_WeaponProjectileComponent* GetWeapon() const { return Weapon; }
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn System")
+	TArray<TSubclassOf<class AUS_Follower>> SpawnableMinions;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn System")
+	int32 NumMinionsAtStart = 5;
 };

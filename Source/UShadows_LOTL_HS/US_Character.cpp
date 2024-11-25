@@ -17,6 +17,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "US_WeaponProjectileComponent.h"
+#include "US_Follower.h"
 // Sets default values
 AUS_Character::AUS_Character()
 {
@@ -186,6 +187,13 @@ void AUS_Character::BeginPlay()
 		}
 	}
 	UpdateCharacterStats(1);
+
+	if (SpawnableMinions.Num() > 0) {
+		int totalFollower = 5;
+		for (int i = 0; i < totalFollower; i++) {
+			Spawn(i, totalFollower);
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -248,4 +256,23 @@ void AUS_Character::SprintEnd_Client_Implementation()
 	{
 		GetCharacterMovement()->MaxWalkSpeed = GetCharacterStats()->WalkSpeed;
 	}
+}
+
+void AUS_Character::Spawn(int index, int total)
+{
+	//GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, TEXT("Spawn a minion"));
+	FActorSpawnParameters SpawnParams;
+	//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	const auto Minion =
+		SpawnableMinions[FMath::RandRange(0, SpawnableMinions.Num() - 1)];
+	const auto Rotation =
+		FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
+	const auto Location = this->GetActorLocation();
+
+	AUS_Follower* follower = GetWorld()->SpawnActor<AUS_Follower>(Minion, Location, Rotation, SpawnParams);
+	follower->SetMaster(this);
+	follower->SurroundRadius = 500.0f;
+	follower->SurroundAngleDegrees = ((float)index / total) * 360.f;
+	follower->SurroundAngleDegreeSpeed = 50.f;
 }

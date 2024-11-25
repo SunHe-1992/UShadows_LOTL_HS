@@ -29,12 +29,34 @@ void AUS_GameMode::AlertMinions(AActor* AlertInstigator, const FVector& Location
 	for (const auto Minion : Minions)
 	{
 		if (AlertInstigator == Minion) continue;
-		if (const auto Distance = FVector::Distance(AlertInstigator->GetActorLocation(), Minion -> GetActorLocation()); Distance < Radius)
+		if (const auto Distance = FVector::Distance(AlertInstigator->GetActorLocation(), Minion->GetActorLocation()); Distance < Radius)
 		{
 			if (const auto MinionCharacter = Cast<AUS_Minion>(Minion))
 			{
 				MinionCharacter->GoToLocation(Location);
 			}
+		}
+	}
+}
+
+
+void AUS_GameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// 找到场景中的Character
+  // Find specific character by tag
+	TArray<AActor*> FoundCharacters;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), FoundCharacters);
+
+	for (AActor* Actor : FoundCharacters)
+	{
+		ACharacter* Character = Cast<ACharacter>(Actor);
+		if (Character && Character->ActorHasTag(FName("PlayerCharacter")))
+		{
+			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+			PlayerController->Possess(Character);
+			break;
 		}
 	}
 }
