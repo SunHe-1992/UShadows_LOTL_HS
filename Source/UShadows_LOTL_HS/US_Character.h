@@ -89,8 +89,8 @@ public:
 
 	FORCEINLINE UUS_WeaponProjectileComponent* GetWeapon() const { return Weapon; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn System")
-	TArray<TSubclassOf<class AUS_Follower>> SpawnableMinions;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn System", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AUS_Follower> SpawnableMinions;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn System")
 	int32 NumMinionsAtStart = 5;
 };

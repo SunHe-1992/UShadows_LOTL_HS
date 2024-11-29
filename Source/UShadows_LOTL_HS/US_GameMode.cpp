@@ -45,18 +45,18 @@ void AUS_GameMode::BeginPlay()
 	Super::BeginPlay();
 
 	// 找到场景中的Character
-  // Find specific character by tag
-	TArray<AActor*> FoundCharacters;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), FoundCharacters);
+    // Find specific character by tag
+	//TArray<AActor*> FoundCharacters;
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), FoundCharacters);
 
-	for (AActor* Actor : FoundCharacters)
-	{
-		ACharacter* Character = Cast<ACharacter>(Actor);
-		if (Character && Character->ActorHasTag(FName("PlayerCharacter")))
-		{
-			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
-			PlayerController->Possess(Character);
-			break;
-		}
-	}
+	//for (AActor* Actor : FoundCharacters)
+	//{
+	//	ACharacter* Character = Cast<ACharacter>(Actor);
+	//	if (Character && Character->ActorHasTag(FName("PlayerCharacter")))
+	//	{
+	//		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	//		PlayerController->Possess(Character);
+	//		break;
+	//	}
+	//}
 }

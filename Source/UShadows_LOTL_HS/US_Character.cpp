@@ -57,6 +57,12 @@ AUS_Character::AUS_Character()
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+	static ConstructorHelpers::FClassFinder<AUS_Follower>SpawnedFollower(TEXT("/Game/Blueprints/BP_Follower"));
+	if (SpawnedFollower.Succeeded())
+	{
+		this->SpawnableMinions = SpawnedFollower.Class;
+	}
 }
 
 
@@ -188,12 +194,12 @@ void AUS_Character::BeginPlay()
 	}
 	UpdateCharacterStats(1);
 
-	if (SpawnableMinions.Num() > 0) {
-		int totalFollower = 5;
-		for (int i = 0; i < totalFollower; i++) {
-			Spawn(i, totalFollower);
-		}
+
+	int totalFollower = NumMinionsAtStart;
+	for (int i = 0; i < totalFollower; i++) {
+		Spawn(i, totalFollower);
 	}
+
 }
 
 // Called to bind functionality to input
@@ -260,19 +266,15 @@ void AUS_Character::SprintEnd_Client_Implementation()
 
 void AUS_Character::Spawn(int index, int total)
 {
-	//GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, TEXT("Spawn a minion"));
-	FActorSpawnParameters SpawnParams;
-	//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	const auto Minion =
-		SpawnableMinions[FMath::RandRange(0, SpawnableMinions.Num() - 1)];
-	const auto Rotation =
-		FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
+	const auto Rotation = FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
 	const auto Location = this->GetActorLocation();
+	AUS_Follower* follower = GetWorld()->SpawnActor<AUS_Follower>(SpawnableMinions, Location, Rotation);
+	if (follower) {
+		follower->SetMaster(this);
+		follower->SurroundRadius = 500.0f;
+		follower->SurroundAngleDegrees = ((float)index / total) * 360.f;
+		follower->SurroundAngleDegreeSpeed = 50.f;
+		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, TEXT("Spawn a minion"));
+	}
 
-	AUS_Follower* follower = GetWorld()->SpawnActor<AUS_Follower>(Minion, Location, Rotation, SpawnParams);
-	follower->SetMaster(this);
-	follower->SurroundRadius = 500.0f;
-	follower->SurroundAngleDegrees = ((float)index / total) * 360.f;
-	follower->SurroundAngleDegreeSpeed = 50.f;
 }
