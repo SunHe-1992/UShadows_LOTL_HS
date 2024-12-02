@@ -131,6 +131,7 @@ void AUS_Character::Interact_Server_Implementation()
 		GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Red, TEXT("no InteractableActor"));
 	}
 }
+
 // Called every frame
 void AUS_Character::Tick(float DeltaTime)
 {
@@ -197,7 +198,7 @@ void AUS_Character::BeginPlay()
 
 	int totalFollower = NumMinionsAtStart;
 	for (int i = 0; i < totalFollower; i++) {
-		Spawn(i, totalFollower);
+		SpawnFollower();
 	}
 
 }
@@ -264,17 +265,27 @@ void AUS_Character::SprintEnd_Client_Implementation()
 	}
 }
 
-void AUS_Character::Spawn(int index, int total)
+void AUS_Character::SpawnFollower()
 {
+	if (GetLocalRole() != ROLE_Authority) return;
 	const auto Rotation = FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
 	const auto Location = this->GetActorLocation();
 	AUS_Follower* follower = GetWorld()->SpawnActor<AUS_Follower>(SpawnableMinions, Location, Rotation);
 	if (follower) {
+		this->followerList.push_back(follower);
 		follower->SetMaster(this);
 		follower->SurroundRadius = 500.0f;
-		follower->SurroundAngleDegrees = ((float)index / total) * 360.f;
 		follower->SurroundAngleDegreeSpeed = 50.f;
-		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, TEXT("Spawn a minion"));
+		//GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, TEXT("Spawn a minion"));
+		RearrangeFollowers();
+	}
+
+}
+void AUS_Character::RearrangeFollowers()
+{
+	for (size_t i = 0; i < followerList.size(); ++i) {
+		auto follower = followerList[i];
+		follower->SurroundAngleDegrees = ((float)i / (float)followerList.size()) * 360.f;
 	}
 
 }

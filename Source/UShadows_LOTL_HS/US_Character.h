@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "US_PlayerState.h"
+#include "US_Follower.h"
+#include <vector>
 #include "GameFramework/Character.h"
 #include "US_Character.generated.h"
 
@@ -61,6 +63,9 @@ private:
 	AActor* InteractableActor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UUS_WeaponProjectileComponent> Weapon;
+
+	std::vector<AUS_Follower*> followerList;
+	void RearrangeFollowers();
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -70,7 +75,8 @@ public:
 
 	void UpdateCharacterStats(int32 CharacterLevel);
 
-	void Spawn(int index, int total);
+	UFUNCTION(BlueprintCallable, Category = "SpawnFollower", meta = (DisplayName = "SpawnFollower"))
+	void SpawnFollower();
 
 	UFUNCTION(Server, Reliable)
 	void SprintStart_Server();

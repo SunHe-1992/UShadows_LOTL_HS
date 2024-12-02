@@ -40,7 +40,7 @@ void AUS_BasePickup::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 void AUS_BasePickup::Pickup_Implementation(AUS_Character* OwningCharacter)
 {
 	SetOwner(OwningCharacter);
-	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Red, TEXT("Pickup and set owner "));
+	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Red, TEXT("Pickup and set owner " + OwningCharacter->GetName()));
 }
 
 // Called every frame
